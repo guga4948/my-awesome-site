@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;700&family=Lobster&family=Courgette&family=Righteous&family=Monoton&family=Raleway:wght@300;500&family=Gloria+Hallelujah&family=Fredericka+the+Great&family=Pacifico&family=Quicksand:wght@300;700&family=Sacramento&family=Shadows+Into+Light&family=Indie+Flower&family=Special+Elite&family=Just+Me+Again+Down+Here&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;700&family=Lobster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,27 +16,20 @@
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <button id="theme-toggle">🌙</button> <!-- Botão de alternância -->
+            <div class="buttons">
+                <button id="theme-toggle">🌙</button>
+                <button id="view-toggle" data-view="laptop">💻</button>
+            </div>
         </nav>
     </header>
-    
 
     <section id="hero">
-    <!-- Camadas para o efeito 2.5D -->
-    <div class="parallax-layer layer1"></div>
-    <div class="parallax-layer layer2"></div>
-    <div class="parallax-layer layer3"></div>
-    <div class="parallax-layer layer4"></div>
-
-    <div class="hero-content">
-        <h1 class="hover-font">Welcome to My Portfolio</h1>
-        <p>This is a showcase of my work and projects.</p>
-        <a href="#projects" class="cta">View My Projects</a>
-    </div>
-</section>
-
-    
-    
+        <div class="hero-content">
+            <h1>Welcome to My Portfolio</h1>
+            <p>This is a showcase of my work and projects.</p>
+            <a href="#projects" class="cta">View My Projects</a>
+        </div>
+    </section>
 
     <section id="about">
         <h2>About Me</h2>
@@ -47,16 +40,15 @@
         <h2>My Projects</h2>
         <div class="project-container">
             <div class="project-card">
-                <h3 class="hover-font">Project 1</h3>
+                <h3>Project 1</h3>
                 <p>Short description of Project 1.</p>
                 <a href="#">View Project</a>
             </div>
             <div class="project-card">
-                <h3 class="hover-font">Project 2</h3>
+                <h3>Project 2</h3>
                 <p>Short description of Project 2.</p>
                 <a href="#">View Project</a>
             </div>
-            <div id="special-popup" class="popup hidden">        
         </div>
     </section>
 
@@ -70,5 +62,6 @@
         <p>&copy; 2024 Gustavo Nuno Cardoso Mendes. All rights reserved.</p>
     </footer>
 
-
     <script src="script.js"></script>
+</body>
+</html>
