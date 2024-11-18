@@ -75,6 +75,23 @@ logo.addEventListener('click', incrementClickCount);
 // Seleciona o botão de alternância e o elemento body
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
+const viewToggle = document.getElementById('view-toggle');
+const body = document.body;
+
+// Função para alternar entre Laptop e Telemóvel
+viewToggle.addEventListener('click', () => {
+    const currentView = viewToggle.getAttribute('data-view');
+
+    if (currentView === 'laptop') {
+        body.classList.add('mobile-view'); // Adiciona classe de telemóvel
+        viewToggle.textContent = '📱';
+        viewToggle.setAttribute('data-view', 'mobile');
+    } else {
+        body.classList.remove('mobile-view'); // Volta ao laptop
+        viewToggle.textContent = '💻';
+        viewToggle.setAttribute('data-view', 'laptop');
+    }
+});
 
 // Verifica o tema salvo no localStorage
 const savedTheme = localStorage.getItem('theme');
