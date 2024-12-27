@@ -1,75 +1,45 @@
-/* Estilo geral da página */
 body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f0f2f5;
+  font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
 }
 
-/* Estilo do contêiner principal */
-.container {
+.login-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 90%;
-  max-width: 800px;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo do título */
-h1 {
-  margin-bottom: 25px;
-  font-size: 2rem;
-  color: #333333;
-}
-
-/* Estilo do grupo de entrada */
-.input-group {
-  margin-bottom: 25px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.input-group input {
-  flex: 1;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #cccccc;
-  border-radius: 8px;
-  transition: border-color 0.3s;
-}
-
-.input-group input:focus {
-  border-color: #0073e6;
-  outline: none;
-}
-
-.input-group button {
-  padding: 12px 20px;
-  font-size: 16px;
-  color: #ffffff;
-  background-color: #0073e6;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.input-group button:hover {
-  background-color: #005bb5;
-}
-
-/* Estilo do iframe */
-iframe {
+input {
+  display: block;
   width: 100%;
-  height: 450px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+#error-message {
+  color: red;
+  font-size: 14px;
 }
