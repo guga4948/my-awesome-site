@@ -1,67 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;700&family=Lobster&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Subscriber Count</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">My Portfolio</div>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="buttons">
-                <button id="theme-toggle">🌙</button>
-                <button id="view-toggle" data-view="laptop">💻</button>
-            </div>
-        </nav>
-    </header>
-
-    <section id="hero">
-        <div class="hero-content">
-            <h1>Welcome to My Portfolio</h1>
-            <p>This is a showcase of my work and projects.</p>
-            <a href="#projects" class="cta">View My Projects</a>
-        </div>
-    </section>
-
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Write something about yourself here.</p>
-    </section>
-
-    <section id="projects">
-        <h2>My Projects</h2>
-        <div class="project-container">
-            <div class="project-card">
-                <h3>Project 1</h3>
-                <p>Short description of Project 1.</p>
-                <a href="#">View Project</a>
-            </div>
-            <div class="project-card">
-                <h3>Project 2</h3>
-                <p>Short description of Project 2.</p>
-                <a href="#">View Project</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p>Feel free to reach out!</p>
-        <a href="#">Email Me</a>
-    </section>
-
-    <footer>
-        <p>&copy; 2024 Gustavo Nuno Cardoso Mendes. All rights reserved.</p>
-    </footer>
-
-    <script src="script.js"></script>
+  <div class="container">
+    <h1>Simulated YouTube Live Subscriber Count</h1>
+    <div class="subscriber-info">
+      <p>Channel: <span id="channel-name">Your Channel Name</span></p>
+      <p>Subscribers: <span id="subscriber-count">Loading...</span></p>
+    </div>
+    <canvas id="subscriber-graph"></canvas>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
