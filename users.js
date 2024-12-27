@@ -2,10 +2,18 @@ const userForm = document.getElementById("user-form");
 const userTableBody = document.querySelector("#user-list tbody");
 let editingIndex = null; // Índice do utilizador sendo editado (se houver)
 
-// Carrega utilizadores do localStorage
 function loadUsers() {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  
+  // Obtemos a chave de usuários e descomprimimos se houver dados
+  const usersCompressed = localStorage.getItem("users");
+  let users = [];
+
+  if (usersCompressed) {
+    const decompressed = LZString.decompress(usersCompressed);
+    if (decompressed) {
+      users = JSON.parse(decompressed);
+    }
+  }
+
   userTableBody.innerHTML = users
     .map(
       (user, index) => `
@@ -20,7 +28,6 @@ function loadUsers() {
     .join("");
 }
 
-// Gerencia o evento de envio do formulário
 userForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -38,7 +45,15 @@ userForm.addEventListener("submit", (e) => {
     const photo = reader.result;
 
     const newUser = { firstName, lastName, dob, phone, email, age, instagram, photo };
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const usersCompressed = localStorage.getItem("users");
+    let users = [];
+
+    if (usersCompressed) {
+      const decompressed = LZString.decompress(usersCompressed);
+      if (decompressed) {
+        users = JSON.parse(decompressed);
+      }
+    }
 
     if (editingIndex !== null) {
       // Atualiza utilizador existente
@@ -46,16 +61,16 @@ userForm.addEventListener("submit", (e) => {
       editingIndex = null;
       alert("Utilizador atualizado com sucesso!");
 
-      // Atualiza o texto do botão para "Adicionar"
       document.querySelector('button[type="submit"]').textContent = "Adicionar";
     } else {
-      // Adiciona um novo utilizador
+      // Adiciona novo utilizador
       users.push(newUser);
       alert("Utilizador adicionado com sucesso!");
     }
 
-    // Grava no localStorage e recarrega a lista
-    localStorage.setItem("users", JSON.stringify(users));
+    // Comprime antes de salvar no localStorage
+    const compressed = LZString.compress(JSON.stringify(users));
+    localStorage.setItem("users", compressed);
     userForm.reset();
     loadUsers();
   };
@@ -63,9 +78,17 @@ userForm.addEventListener("submit", (e) => {
   reader.readAsDataURL(photoInput);
 });
 
-// Função para editar utilizador existente
 function editUser(index) {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const usersCompressed = localStorage.getItem("users");
+  let users = [];
+
+  if (usersCompressed) {
+    const decompressed = LZString.decompress(usersCompressed);
+    if (decompressed) {
+      users = JSON.parse(decompressed);
+    }
+  }
+
   const user = users[index];
 
   document.getElementById("firstName").value = user.firstName;
@@ -81,5 +104,5 @@ function editUser(index) {
   document.querySelector('button[type="submit"]').textContent = "Salvar Alterações";
 }
 
-// Inicializa a tabela de utilizadores
+// Inicializa a lista de utilizadores
 loadUsers();
