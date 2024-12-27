@@ -1,9 +1,9 @@
 /* Estilo geral da página */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
-  background: #f4f4f4;
+  background: #f0f2f5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,43 +13,52 @@ body {
 /* Estilo do contêiner principal */
 .container {
   text-align: center;
-  width: 100%;
+  width: 90%;
   max-width: 800px;
-  padding: 20px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo do título */
 h1 {
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  color: #333;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  color: #333333;
 }
 
 /* Estilo do grupo de entrada */
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 .input-group input {
-  width: calc(100% - 120px);
-  max-width: 500px;
-  padding: 10px;
+  flex: 1;
+  padding: 12px;
   font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #0073e6;
+  outline: none;
 }
 
 .input-group button {
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 16px;
-  color: #fff;
+  color: #ffffff;
   background-color: #0073e6;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .input-group button:hover {
@@ -59,9 +68,8 @@ h1 {
 /* Estilo do iframe */
 iframe {
   width: 100%;
-  max-width: 700px;
-  height: 400px;
+  height: 450px;
   border: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
