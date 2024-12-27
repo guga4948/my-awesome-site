@@ -3,48 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Subscriber Count</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      background: #f4f4f4;
-    }
-
-    iframe {
-      border: none;
-      width: 100%;
-      max-width: 800px;
-      height: 600px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    h1 {
-      color: #333;
-    }
-  </style>
+  <title>Live YouTube Subscriber Count</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>YouTube Live Subscriber Count</h1>
-  <iframe
-    id="live-count"
-    src="https://socialblade.com/youtube/channel/YOUR_CHANNEL_ID/realtime"
-    allowfullscreen>
-  </iframe>
+  <div class="container">
+    <h1>YouTube Live Subscriber Count</h1>
+    <div class="input-group">
+      <input type="text" id="channel-id" placeholder="Enter YouTube Channel ID or Username">
+      <button onclick="updateChannel()">Load</button>
+    </div>
+    <iframe id="live-count" src="" allowfullscreen></iframe>
+  </div>
+  <script src="script.js"></script>
 </body>
-<script>
-  function setChannelID(UCX6OQ3DkcsbYNE6H8uQQuVA) {
-    const iframe = document.getElementById('live-count');
-    iframe.src = `https://socialblade.com/youtube/channel/${channelID}/realtime`;
-  }
-
-  // Example: Set the channel to view. Replace with the desired YouTube Channel ID.
-  setChannelID('UC_x5XG1OV2P6uZZ5FSM9Ttw'); // Default: Google Developers channel
-</script>
 </html>
