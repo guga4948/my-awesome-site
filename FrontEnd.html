@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Cadastro de Utilizadores</title>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Adicionar Utilizador</h1>
+    <form id="user-form">
+      <input type="text" id="firstName" placeholder="Primeiro Nome" required>
+      <input type="text" id="lastName" placeholder="Último Nome" required>
+      <input type="number" id="age" placeholder="Idade" required>
+      <input type="text" id="instagram" placeholder="Instagram" required>
+      <input type="file" id="photo" accept="image/*" required>
+      <button type="submit">Adicionar</button>
+    </form>
+    <div id="user-list"></div>
+  </div>
+  <script src="users.js"></script>
+</body>
+</html>
