@@ -1,9 +1,11 @@
 const userForm = document.getElementById("user-form");
 const userTableBody = document.querySelector("#user-list tbody");
-let editingIndex = null; // Índice para rastrear o usuário em edição
+let editingIndex = null; // Índice do utilizador sendo editado (se houver)
 
+// Carrega utilizadores do localStorage
 function loadUsers() {
   const users = JSON.parse(localStorage.getItem("users")) || [];
+  
   userTableBody.innerHTML = users
     .map(
       (user, index) => `
@@ -18,6 +20,7 @@ function loadUsers() {
     .join("");
 }
 
+// Gerencia o evento de envio do formulário
 userForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -38,30 +41,33 @@ userForm.addEventListener("submit", (e) => {
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     if (editingIndex !== null) {
-      // Atualiza o utilizador existente
+      // Atualiza utilizador existente
       users[editingIndex] = newUser;
-      editingIndex = null; // Limpa o índice de edição
+      editingIndex = null;
       alert("Utilizador atualizado com sucesso!");
+
+      // Atualiza o texto do botão para "Adicionar"
+      document.querySelector('button[type="submit"]').textContent = "Adicionar";
     } else {
       // Adiciona um novo utilizador
       users.push(newUser);
       alert("Utilizador adicionado com sucesso!");
     }
 
+    // Grava no localStorage e recarrega a lista
     localStorage.setItem("users", JSON.stringify(users));
     userForm.reset();
-    loadUsers(); // Recarrega a tabela de utilizadores
-    document.querySelector('button[type="submit"]').textContent = "Adicionar";
+    loadUsers();
   };
 
   reader.readAsDataURL(photoInput);
 });
 
+// Função para editar utilizador existente
 function editUser(index) {
   const users = JSON.parse(localStorage.getItem("users")) || [];
   const user = users[index];
 
-  // Preenche o formulário com os dados existentes
   document.getElementById("firstName").value = user.firstName;
   document.getElementById("lastName").value = user.lastName;
   document.getElementById("dob").value = user.dob;
@@ -70,7 +76,8 @@ function editUser(index) {
   document.getElementById("age").value = user.age;
   document.getElementById("instagram").value = user.instagram;
 
-  editingIndex = index; // Define o índice que está sendo editado
+  editingIndex = index;
+
   document.querySelector('button[type="submit"]').textContent = "Salvar Alterações";
 }
 
