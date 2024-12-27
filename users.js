@@ -1,22 +1,18 @@
 const userForm = document.getElementById("user-form");
-const userList = document.getElementById("user-list");
-let editingIndex = null; // Índice do utilizador em edição
+const userTableBody = document.querySelector("#user-list tbody");
+let editingIndex = null; // Índice para rastrear o usuário em edição
 
 function loadUsers() {
   const users = JSON.parse(localStorage.getItem("users")) || [];
-  userList.innerHTML = users
+  userTableBody.innerHTML = users
     .map(
       (user, index) => `
-      <div class="user-card">
-        <img src="${user.photo}" alt="${user.firstName}" width="50">
-        <p><strong>${user.firstName} ${user.lastName}</strong> (${user.age} anos)</p>
-        <p>Data de Nascimento: ${user.dob}</p>
-        <p>Telefone: ${user.phone}</p>
-        <p>E-mail: ${user.email}</p>
-        <p>Instagram: <a href="https://instagram.com/${user.instagram}" target="_blank">@${user.instagram}</a></p>
-        <button onclick="editUser(${index})">Editar</button>
-        <button onclick="deleteUser(${index})">Eliminar</button>
-      </div>
+      <tr>
+        <td><img src="${user.photo}" alt="${user.firstName}" width="50"></td>
+        <td>${user.firstName} ${user.lastName}</td>
+        <td><a href="https://instagram.com/${user.instagram}" target="_blank">@${user.instagram}</a></td>
+        <td><button onclick="editUser(${index})">Editar</button></td>
+      </tr>
     `
     )
     .join("");
@@ -46,9 +42,6 @@ userForm.addEventListener("submit", (e) => {
       users[editingIndex] = newUser;
       editingIndex = null; // Limpa o índice de edição
       alert("Utilizador atualizado com sucesso!");
-
-      // Altera o texto do botão para "Adicionar"
-      document.querySelector('button[type="submit"]').textContent = "Adicionar";
     } else {
       // Adiciona um novo utilizador
       users.push(newUser);
@@ -57,7 +50,8 @@ userForm.addEventListener("submit", (e) => {
 
     localStorage.setItem("users", JSON.stringify(users));
     userForm.reset();
-    loadUsers();
+    loadUsers(); // Recarrega a tabela de utilizadores
+    document.querySelector('button[type="submit"]').textContent = "Adicionar";
   };
 
   reader.readAsDataURL(photoInput);
@@ -77,19 +71,8 @@ function editUser(index) {
   document.getElementById("instagram").value = user.instagram;
 
   editingIndex = index; // Define o índice que está sendo editado
-
-  // Atualiza o botão para indicar modo de edição
   document.querySelector('button[type="submit"]').textContent = "Salvar Alterações";
 }
 
-function deleteUser(index) {
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  users.splice(index, 1); // Remove o utilizador do array
-
-  localStorage.setItem("users", JSON.stringify(users));
-  alert("Utilizador eliminado com sucesso!");
-  loadUsers(); // Atualiza a lista de utilizadores
-}
-
-// Inicializa a lista de utilizadores
+// Inicializa a tabela de utilizadores
 loadUsers();
