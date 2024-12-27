@@ -1,19 +1,9 @@
 const userForm = document.getElementById("user-form");
 const userTableBody = document.querySelector("#user-list tbody");
-let editingIndex = null; // Índice do utilizador sendo editado (se houver)
+let editingIndex = null; // Índice para rastrear o usuário em edição
 
 function loadUsers() {
-  // Obtemos a chave de usuários e descomprimimos se houver dados
-  const usersCompressed = localStorage.getItem("users");
-  let users = [];
-
-  if (usersCompressed) {
-    const decompressed = LZString.decompress(usersCompressed);
-    if (decompressed) {
-      users = JSON.parse(decompressed);
-    }
-  }
-
+  const users = JSON.parse(localStorage.getItem("users")) || [];
   userTableBody.innerHTML = users
     .map(
       (user, index) => `
@@ -45,52 +35,33 @@ userForm.addEventListener("submit", (e) => {
     const photo = reader.result;
 
     const newUser = { firstName, lastName, dob, phone, email, age, instagram, photo };
-    const usersCompressed = localStorage.getItem("users");
-    let users = [];
-
-    if (usersCompressed) {
-      const decompressed = LZString.decompress(usersCompressed);
-      if (decompressed) {
-        users = JSON.parse(decompressed);
-      }
-    }
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
     if (editingIndex !== null) {
-      // Atualiza utilizador existente
+      // Atualiza o utilizador existente
       users[editingIndex] = newUser;
-      editingIndex = null;
+      editingIndex = null; // Limpa o índice de edição
       alert("Utilizador atualizado com sucesso!");
-
-      document.querySelector('button[type="submit"]').textContent = "Adicionar";
     } else {
-      // Adiciona novo utilizador
+      // Adiciona um novo utilizador
       users.push(newUser);
       alert("Utilizador adicionado com sucesso!");
     }
 
-    // Comprime antes de salvar no localStorage
-    const compressed = LZString.compress(JSON.stringify(users));
-    localStorage.setItem("users", compressed);
+    localStorage.setItem("users", JSON.stringify(users));
     userForm.reset();
-    loadUsers();
+    loadUsers(); // Recarrega a tabela de utilizadores
+    document.querySelector('button[type="submit"]').textContent = "Adicionar";
   };
 
   reader.readAsDataURL(photoInput);
 });
 
 function editUser(index) {
-  const usersCompressed = localStorage.getItem("users");
-  let users = [];
-
-  if (usersCompressed) {
-    const decompressed = LZString.decompress(usersCompressed);
-    if (decompressed) {
-      users = JSON.parse(decompressed);
-    }
-  }
-
+  const users = JSON.parse(localStorage.getItem("users")) || [];
   const user = users[index];
 
+  // Preenche o formulário com os dados existentes
   document.getElementById("firstName").value = user.firstName;
   document.getElementById("lastName").value = user.lastName;
   document.getElementById("dob").value = user.dob;
@@ -99,10 +70,9 @@ function editUser(index) {
   document.getElementById("age").value = user.age;
   document.getElementById("instagram").value = user.instagram;
 
-  editingIndex = index;
-
+  editingIndex = index; // Define o índice que está sendo editado
   document.querySelector('button[type="submit"]').textContent = "Salvar Alterações";
 }
 
-// Inicializa a lista de utilizadores
+// Inicializa a tabela de utilizadores
 loadUsers();
