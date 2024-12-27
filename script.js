@@ -1,29 +1,18 @@
-// Função para atualizar o iframe com o canal correto
-function updateChannel() {
-  const channelInput = document.getElementById('channel-id').value.trim();
-  const iframe = document.getElementById('live-count');
+document.getElementById('login-form').addEventListener('submit', function (e) {
+  e.preventDefault();
 
-  // Validação da entrada
-  if (channelInput === '') {
-    alert('Por favor, insira uma ID ou nome de usuário válido.');
-    return;
-  }
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-  // Construção da URL do Social Blade
-  if (channelInput.startsWith('@')) {
-    // Se for um nome de usuário
-    iframe.src = `https://socialblade.com/youtube/user/${channelInput.substring(1)}/realtime`;
+  // Hash simples para verificação (melhor seria usar um servidor)
+  const validUsername = btoa('gustavo'); // Base64 encode
+  const validPassword = btoa('bola#2000');
+
+  if (btoa(username) === validUsername && btoa(password) === validPassword) {
+    alert('Login bem-sucedido!');
+    // Redirecionar ou abrir outra página aqui
   } else {
-    // Se for uma ID de canal
-    iframe.src = `https://socialblade.com/youtube/channel/${channelInput}/realtime`;
+    document.getElementById('error-message').textContent =
+      'Utilizador ou senha incorretos.';
   }
-}
-
-// Configuração inicial ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-  const iframe = document.getElementById('live-count');
-  const DEFAULT_CHANNEL_URL = 'https://socialblade.com/youtube/channel/UCfiqIvvkywBMifXT_vCng_g/realtime';
-
-  // Definir o canal padrão (Gustavo Mendes)
-  iframe.src = DEFAULT_CHANNEL_URL;
 });
