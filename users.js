@@ -1,6 +1,6 @@
 const userForm = document.getElementById("user-form");
 const userList = document.getElementById("user-list");
-let editingIndex = null; // Variável para indicar se está editando
+let editingIndex = null; // Índice do utilizador em edição
 
 function loadUsers() {
   const users = JSON.parse(localStorage.getItem("users")) || [];
@@ -15,7 +15,7 @@ function loadUsers() {
         <p>E-mail: ${user.email}</p>
         <p>Instagram: <a href="https://instagram.com/${user.instagram}" target="_blank">@${user.instagram}</a></p>
         <button onclick="editUser(${index})">Editar</button>
-        <button onclick="deleteUser(${index})">Excluir</button>
+        <button onclick="deleteUser(${index})">Eliminar</button>
       </div>
     `
     )
@@ -42,10 +42,13 @@ userForm.addEventListener("submit", (e) => {
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     if (editingIndex !== null) {
-      // Edita o utilizador existente
+      // Atualiza o utilizador existente
       users[editingIndex] = newUser;
-      editingIndex = null;
+      editingIndex = null; // Limpa o índice de edição
       alert("Utilizador atualizado com sucesso!");
+
+      // Altera o texto do botão para "Adicionar"
+      document.querySelector('button[type="submit"]').textContent = "Adicionar";
     } else {
       // Adiciona um novo utilizador
       users.push(newUser);
@@ -72,18 +75,21 @@ function editUser(index) {
   document.getElementById("email").value = user.email;
   document.getElementById("age").value = user.age;
   document.getElementById("instagram").value = user.instagram;
-  
+
   editingIndex = index; // Define o índice que está sendo editado
+
+  // Atualiza o botão para indicar modo de edição
+  document.querySelector('button[type="submit"]').textContent = "Salvar Alterações";
 }
 
 function deleteUser(index) {
   const users = JSON.parse(localStorage.getItem("users")) || [];
-  users.splice(index, 1);
+  users.splice(index, 1); // Remove o utilizador do array
 
   localStorage.setItem("users", JSON.stringify(users));
-  alert("Utilizador excluído com sucesso!");
-  loadUsers();
+  alert("Utilizador eliminado com sucesso!");
+  loadUsers(); // Atualiza a lista de utilizadores
 }
 
-// Carrega os utilizadores salvos
+// Inicializa a lista de utilizadores
 loadUsers();
