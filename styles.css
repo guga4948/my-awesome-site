@@ -1,43 +1,47 @@
 /* style.css */
 body {
-  background: linear-gradient(135deg, #fceabb, #f8b500);
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100vh;
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 #game-container {
-  text-align: center;
-  background: white;
-  padding: 30px;
+  background: #fff;
+  padding: 20px 30px;
   border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
 }
 
 h1 {
-  font-size: 2.5em;
+  font-size: 2em;
   color: #ff6f61;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
-#score-display, #highscore-display {
-  font-size: 1.8em;
-  margin: 10px 0;
-  color: #333;
+.score-board {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  font-size: 1.2em;
 }
 
 #click-button {
-  font-size: 1.5em;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 10px;
-  background-color: #ff6f61;
+  background: #ff6f61;
   color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 25px;
+  font-size: 1.5em;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: transform 0.1s, box-shadow 0.2s;
+  margin-bottom: 20px;
 }
 
 #click-button:active {
@@ -45,11 +49,62 @@ h1 {
 }
 
 #click-button.pop {
-  animation: pop 0.2s ease;
+  animation: pop 0.3s ease;
 }
 
 @keyframes pop {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
   100% { transform: scale(1); }
+}
+
+#upgrades-container {
+  margin-top: 20px;
+}
+
+#upgrades-container h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.upgrade-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.upgrade-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8em;
+  }
+  
+  #click-button {
+    font-size: 1.3em;
+    padding: 12px 20px;
+  }
+  
+  .score-board {
+    font-size: 1em;
+    flex-direction: column;
+  }
+  
+  .upgrade-btn {
+    font-size: 0.9em;
+    padding: 8px;
+    width: 90%;
+    margin: 5px auto;
+  }
 }
