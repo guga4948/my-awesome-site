@@ -64,12 +64,10 @@ button:hover {
   color: #333;
 }
 
-/* Output section styling */
-#output {
-  margin-top: 10px;
-  padding: 10px;
-  background: #fff;
+/* Canvas output styling */
+#canvas-output {
   border: 1px solid #ccc;
-  min-height: 50px;
-  white-space: pre-wrap;
+  background: #fff;
+  display: block;
+  margin: auto;
 }
