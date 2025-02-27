@@ -2,20 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Descriptive Geometry AI Trainer</title>
   <link rel="stylesheet" href="style.css">
-  <title>Login</title>
 </head>
 <body>
-  <div class="login-container">
-    <h1>Login</h1>
-    <form id="login-form">
-      <input type="text" id="username" placeholder="Utilizador" required>
-      <input type="password" id="password" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
-    </form>
-    <p id="error-message"></p>
+  <div class="container">
+    <h1>Descriptive Geometry AI Trainer</h1>
+    
+    <section id="training-section">
+      <h2>Training</h2>
+      <textarea id="training-input" placeholder="Enter exercise training data..."></textarea>
+      <button id="train-button">Train AI</button>
+    </section>
+    
+    <section id="testing-section">
+      <h2>Test the Model</h2>
+      <input type="text" id="test-input" placeholder="Enter exercise query...">
+      <button id="test-button">Run Model</button>
+    </section>
+    
+    <section id="output-section">
+      <h2>Drawing Output</h2>
+      <div id="grid-output"></div>
+    </section>
   </div>
-  <script src="login.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
