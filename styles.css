@@ -2,35 +2,40 @@ body {
   font-family: Arial, sans-serif;
   background: #f7f7f7;
   margin: 0;
-  padding: 0;
+  padding: 20px;
 }
 
 .container {
   max-width: 800px;
-  margin: 20px auto;
+  margin: auto;
+  background: #fff;
   padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2, h3 {
+h1, h2 {
   text-align: center;
 }
 
-textarea, input[type="text"] {
+input[type="file"],
+input[type="text"],
+input[type="number"],
+button {
+  display: block;
   width: 100%;
+  margin: 10px 0;
   padding: 10px;
-  margin-bottom: 10px;
   box-sizing: border-box;
 }
 
 button {
-  padding: 10px 20px;
+  background-color: #007acc;
+  border: none;
+  color: #fff;
   font-size: 16px;
   cursor: pointer;
-  margin: 5px;
-  border: none;
   border-radius: 4px;
-  background-color: #007acc;
-  color: #fff;
   transition: background-color 0.3s ease;
 }
 
@@ -38,36 +43,32 @@ button:hover {
   background-color: #005fa3;
 }
 
-/* Progress bar styling */
-#progress-container {
-  margin: 20px 0;
-  background: #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-  height: 25px;
+#upload-status, #match-result {
+  margin-top: 10px;
+  text-align: center;
 }
 
-#progress-bar {
+#match-progress-container {
+  margin: 10px 0;
+  background: #ddd;
+  border-radius: 4px;
+  position: relative;
+  height: 25px;
+  overflow: hidden;
+}
+
+#match-progress-bar {
   background: #007acc;
   height: 100%;
   width: 0%;
   transition: width 0.1s ease;
 }
 
-#progress-text {
+#match-progress-text {
   position: absolute;
   width: 100%;
   text-align: center;
   line-height: 25px;
   font-weight: bold;
   color: #333;
-}
-
-/* Canvas output styling */
-#canvas-output {
-  border: 1px solid #ccc;
-  background: #fff;
-  display: block;
-  margin: auto;
 }
