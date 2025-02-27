@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let trainingData = JSON.parse(localStorage.getItem('trainingData')) || [];
   let feedbackData = JSON.parse(localStorage.getItem('feedbackData')) || [];
 
-  // "Train" the AI: store the problem in localStorage
+  // Training: store the problem in localStorage
   trainButton.addEventListener('click', () => {
     const data = trainingInput.value.trim();
     if (data !== '') {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Run the model (low and medium resolution)
+  // Run model buttons
   lowResButton.addEventListener('click', () => runModel('low'));
   medResButton.addEventListener('click', () => runModel('medium'));
 
@@ -37,55 +37,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastTest = null;
 
-  // Run the model: simulate progress then draw solution on canvas
+  // Main function to run the model with simulated progress
   function runModel(resolution) {
     const query = testInput.value.trim();
     if (!query) {
       alert('Por favor, digite um problema para testar.');
       return;
     }
+    console.log("runModel called with resolution:", resolution, "query:", query);
     lastTest = { query, resolution, timestamp: Date.now() };
+
+    // Reset progress and canvas
     progressBar.style.width = '0%';
     progressText.textContent = '0%';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Total simulation time: low-res = 500ms, medium-res = 5000ms.
+    // Set total simulation time (in ms)
     const totalTime = resolution === 'low' ? 500 : 5000;
     const startTime = Date.now();
 
+    // Update progress every 50ms
     const timer = setInterval(() => {
       const elapsed = Date.now() - startTime;
       let progress = Math.floor((elapsed / totalTime) * 100);
       if (progress > 100) progress = 100;
       progressBar.style.width = progress + '%';
       progressText.textContent = progress + '%';
+
       if (progress >= 100) {
         clearInterval(timer);
+        console.log("Progress complete, drawing solution");
         const solution = parseProblem(query);
         drawSolution(solution, resolution);
       }
-    }, 50); // update every 50ms
+    }, 50);
   }
 
-  // Parse the problem text for keywords to choose a drawing type
+  // Parse the problem text for keywords to decide the drawing type
   function parseProblem(problemText) {
-    let lowerText = problemText.toLowerCase();
+    const lowerText = problemText.toLowerCase();
+    console.log("Parsing problem text:", lowerText);
     if (lowerText.includes("segmento") || lowerText.includes("reta")) {
-      // Dummy parameters for a line
+      console.log("Detected a line problem");
+      // Dummy parameters for a line drawing
       return { type: "line", params: { x0: 50, y0: 200, x1: 350, y1: 200 } };
     } else if (lowerText.includes("círculo") || lowerText.includes("circulo")) {
+      console.log("Detected a circle problem");
       return { type: "circle", params: { x: 200, y: 200, radius: 100 } };
     } else if (lowerText.includes("triângulo") || lowerText.includes("triangulo")) {
+      console.log("Detected a triangle problem");
       return { type: "triangle", params: { x0: 200, y0: 50, x1: 50, y1: 350, x2: 350, y2: 350 } };
     } else if (lowerText.includes("retângulo") || lowerText.includes("retangulo")) {
+      console.log("Detected a rectangle problem");
       return { type: "rectangle", params: { x: 100, y: 100, width: 200, height: 150 } };
     } else {
+      console.log("No recognized keywords, using default output");
       return { type: "default", params: {} };
     }
   }
 
-  // Draw solution on canvas based on its type and resolution mode
+  // Draw the solution on canvas based on its type and resolution mode
   function drawSolution(solution, resolution) {
+    console.log("Drawing solution:", solution, "with resolution:", resolution);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = "#007acc";
     ctx.fillStyle = "#007acc";
@@ -93,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.font = resolution === 'low' ? "12px Arial" : "16px Arial";
     ctx.textAlign = "center";
 
-    switch(solution.type) {
+    switch (solution.type) {
       case "line": {
         const { x0, y0, x1, y1 } = solution.params;
         ctx.beginPath();
