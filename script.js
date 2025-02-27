@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const feedbackCorrect = document.getElementById('feedback-correct');
   const feedbackIncorrect = document.getElementById('feedback-incorrect');
 
-  // Retrieve training data and feedback from localStorage
+  // Retrieve training and feedback data from localStorage
   let trainingData = JSON.parse(localStorage.getItem('trainingData')) || [];
   let feedbackData = JSON.parse(localStorage.getItem('feedbackData')) || [];
 
-  // Training: store the problem in localStorage
+  // "Train" the AI: store the problem in localStorage
   trainButton.addEventListener('click', () => {
     const data = trainingInput.value.trim();
     if (data !== '') {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastTest = null;
 
-  // Run model: simulate progress and then draw solution on canvas
+  // Run the model: simulate progress then draw solution on canvas
   function runModel(resolution) {
     const query = testInput.value.trim();
     if (!query) {
@@ -47,37 +47,31 @@ document.addEventListener('DOMContentLoaded', () => {
     lastTest = { query, resolution, timestamp: Date.now() };
     progressBar.style.width = '0%';
     progressText.textContent = '0%';
-    // Clear canvas before drawing new output
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let increment, intervalTime;
-    if (resolution === 'low') {
-      increment = 20; // fast (completes in ~500ms)
-      intervalTime = 100;
-    } else {
-      increment = 2;  // slow (completes in ~5 seconds)
-      intervalTime = 100;
-    }
+    // Total simulation time: low-res = 500ms, medium-res = 5000ms.
+    const totalTime = resolution === 'low' ? 500 : 5000;
+    const startTime = Date.now();
 
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += increment;
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      let progress = Math.floor((elapsed / totalTime) * 100);
       if (progress > 100) progress = 100;
       progressBar.style.width = progress + '%';
       progressText.textContent = progress + '%';
-      if (progress === 100) {
-        clearInterval(interval);
+      if (progress >= 100) {
+        clearInterval(timer);
         const solution = parseProblem(query);
         drawSolution(solution, resolution);
       }
-    }, intervalTime);
+    }, 50); // update every 50ms
   }
 
-  // Parse problem text and choose a drawing type based on keywords
+  // Parse the problem text for keywords to choose a drawing type
   function parseProblem(problemText) {
     let lowerText = problemText.toLowerCase();
     if (lowerText.includes("segmento") || lowerText.includes("reta")) {
-      // For a line, use dummy coordinates (these can be adapted later)
+      // Dummy parameters for a line
       return { type: "line", params: { x0: 50, y0: 200, x1: 350, y1: 200 } };
     } else if (lowerText.includes("círculo") || lowerText.includes("circulo")) {
       return { type: "circle", params: { x: 200, y: 200, radius: 100 } };
@@ -90,13 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Draw the solution on canvas based on its type and the chosen resolution
+  // Draw solution on canvas based on its type and resolution mode
   function drawSolution(solution, resolution) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = "#007acc";
     ctx.fillStyle = "#007acc";
-    ctx.lineWidth = (resolution === 'low' ? 2 : 4);
-    ctx.font = (resolution === 'low' ? "12px Arial" : "16px Arial");
+    ctx.lineWidth = resolution === 'low' ? 2 : 4;
+    ctx.font = resolution === 'low' ? "12px Arial" : "16px Arial";
     ctx.textAlign = "center";
 
     switch(solution.type) {
@@ -108,10 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.stroke();
         // Draw endpoints
         ctx.beginPath();
-        ctx.arc(x0, y0, (resolution === 'low' ? 4 : 6), 0, 2 * Math.PI);
+        ctx.arc(x0, y0, resolution === 'low' ? 4 : 6, 0, 2 * Math.PI);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(x1, y1, (resolution === 'low' ? 4 : 6), 0, 2 * Math.PI);
+        ctx.arc(x1, y1, resolution === 'low' ? 4 : 6, 0, 2 * Math.PI);
         ctx.fill();
         ctx.fillStyle = "#333";
         ctx.fillText("Linha", (x0 + x1) / 2, (y0 + y1) / 2 - 10);
