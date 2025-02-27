@@ -3,16 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Super Satisfying Clicker Game</title>
+  <title>Cute Clicker Adventure!</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Using a cute Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="game-container">
-    <h1>Super Satisfying Clicker Game</h1>
-    <div id="score-display">Score: 0</div>
-    <div id="highscore-display">High Score: 0</div>
-    <button id="click-button">Click Me!</button>
+    <h1>Cute Clicker Adventure!</h1>
+    <div class="score-board">
+      <div id="score-display">Score: 0</div>
+      <div id="highscore-display">High Score: 0</div>
+    </div>
+    <button id="click-button">Tap Me!</button>
+    <div id="upgrades-container">
+      <h2>Upgrades</h2>
+      <button id="upgrade-click" class="upgrade-btn" disabled>Increase Click Value (Cost: 50)</button>
+      <button id="upgrade-auto" class="upgrade-btn" disabled>Buy Auto Clicker (Cost: 100)</button>
+    </div>
   </div>
+  
+  <!-- Audio element for click sound (replace the src with your own sound file URL) -->
+  <audio id="click-sound" src="https://freesound.org/data/previews/66/66717_931655-lq.mp3"></audio>
+  
   <script src="script.js"></script>
 </body>
 </html>
