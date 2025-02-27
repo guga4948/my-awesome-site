@@ -1,1 +1,55 @@
+/* style.css */
+body {
+  background: linear-gradient(135deg, #fceabb, #f8b500);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
 
+#game-container {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #ff6f61;
+  margin-bottom: 20px;
+}
+
+#score-display, #highscore-display {
+  font-size: 1.8em;
+  margin: 10px 0;
+  color: #333;
+}
+
+#click-button {
+  font-size: 1.5em;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ff6f61;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+#click-button:active {
+  transform: scale(0.95);
+}
+
+#click-button.pop {
+  animation: pop 0.2s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
