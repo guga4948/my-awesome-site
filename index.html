@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Face Database & Matcher</title>
+  <title>Banco de Faces e Matcher com IA</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Banco de Faces e Match</h1>
+    <h1>Banco de Faces & Matcher</h1>
     
-    <!-- Section 1: Upload & Store Face -->
+    <!-- Section 1: Add Face -->
     <section id="upload-section">
       <h2>Adicionar Face</h2>
       <input type="file" id="upload-file" accept="image/*">
@@ -35,6 +35,9 @@
       <div id="match-result"></div>
     </section>
   </div>
-  <script src="script.js"></script>
+  
+  <!-- Load face-api.js from CDN and then our script -->
+  <script defer src="https://unpkg.com/face-api.js"></script>
+  <script defer src="script.js"></script>
 </body>
 </html>
