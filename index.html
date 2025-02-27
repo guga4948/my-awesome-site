@@ -1,43 +1,125 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Banco de Faces e Matcher com IA</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Simple Forum Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #chat-container {
+      background: #fff;
+      width: 90%;
+      max-width: 600px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      border-bottom: 1px solid #ccc;
+      background: #fafafa;
+    }
+    .message {
+      padding: 5px 10px;
+      margin: 5px 0;
+      border-radius: 4px;
+      background: #e2e2e2;
+    }
+    #chat-form {
+      display: flex;
+      padding: 10px;
+    }
+    #chat-form input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #chat-form button {
+      padding: 8px 12px;
+      border: none;
+      background: #5cb85c;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #chat-form button:hover {
+      background: #4cae4c;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Banco de Faces & Matcher</h1>
-    
-    <!-- Section 1: Add Face -->
-    <section id="upload-section">
-      <h2>Adicionar Face</h2>
-      <input type="file" id="upload-file" accept="image/*">
-      <input type="text" id="person-name" placeholder="Nome da pessoa">
-      <input type="number" id="person-age" placeholder="Idade">
-      <button id="upload-button">Salvar Face</button>
-      <div id="upload-status"></div>
-    </section>
-    
-    <hr>
-    
-    <!-- Section 2: Match Face -->
-    <section id="match-section">
-      <h2>Procurar Match de Face</h2>
-      <input type="file" id="match-file" accept="image/*">
-      <button id="match-button">Buscar Match</button>
-      <!-- Progress Bar -->
-      <div id="match-progress-container">
-        <div id="match-progress-bar"></div>
-        <span id="match-progress-text">0%</span>
-      </div>
-      <div id="match-result"></div>
-    </section>
+  <div id="chat-container">
+    <div id="messages"></div>
+    <form id="chat-form">
+      <input type="text" id="username" placeholder="Your name" required>
+      <input type="text" id="message-input" placeholder="Your message" required>
+      <button type="submit">Send</button>
+    </form>
   </div>
-  
-  <!-- Load face-api.js from CDN and then our script -->
-  <script defer src="https://unpkg.com/face-api.js"></script>
-  <script defer src="script.js"></script>
+
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <!-- Firebase Realtime Database -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+  <script>
+    // TODO: Replace with your own Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      databaseURL: "YOUR_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const messagesRef = db.ref('messages');
+
+    // Listen for new messages added to the database
+    messagesRef.on('child_added', snapshot => {
+      const msg = snapshot.val();
+      displayMessage(msg.username, msg.text);
+    });
+
+    // Function to display a message in the chat
+    function displayMessage(username, text) {
+      const messagesDiv = document.getElementById('messages');
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      messageElement.textContent = username + ': ' + text;
+      messagesDiv.appendChild(messageElement);
+      // Automatically scroll to the bottom
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Handle message submission
+    document.getElementById('chat-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const text = document.getElementById('message-input').value.trim();
+      if (username && text) {
+        messagesRef.push({ username, text });
+        document.getElementById('message-input').value = '';
+      }
+    });
+  </script>
 </body>
 </html>
