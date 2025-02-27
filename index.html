@@ -3,47 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IA para Geometria Descritiva</title>
+  <title>Face Database & Matcher</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>IA para Geometria Descritiva</h1>
+    <h1>Banco de Faces e Match</h1>
     
-    <!-- Training Section -->
-    <section id="training-section">
-      <h2>Treinamento</h2>
-      <textarea id="training-input" placeholder="Digite um exercício para treinar a IA..."></textarea>
-      <button id="train-button">Treinar IA</button>
+    <!-- Section 1: Upload & Store Face -->
+    <section id="upload-section">
+      <h2>Adicionar Face</h2>
+      <input type="file" id="upload-file" accept="image/*">
+      <input type="text" id="person-name" placeholder="Nome da pessoa">
+      <input type="number" id="person-age" placeholder="Idade">
+      <button id="upload-button">Salvar Face</button>
+      <div id="upload-status"></div>
     </section>
     
-    <!-- Testing Section -->
-    <section id="testing-section">
-      <h2>Testar a IA</h2>
-      <input type="text" id="test-input" placeholder="Digite um problema (em português)..." />
-      <div class="buttons">
-        <button id="low-res-button">Rodar Modelo (Baixa Resolução)</button>
-        <button id="med-res-button">Rodar Modelo (Média Resolução)</button>
-      </div>
-      
+    <hr>
+    
+    <!-- Section 2: Match Face -->
+    <section id="match-section">
+      <h2>Procurar Match de Face</h2>
+      <input type="file" id="match-file" accept="image/*">
+      <button id="match-button">Buscar Match</button>
       <!-- Progress Bar -->
-      <div id="progress-container">
-        <div id="progress-bar"></div>
-        <span id="progress-text">0%</span>
+      <div id="match-progress-container">
+        <div id="match-progress-bar"></div>
+        <span id="match-progress-text">0%</span>
       </div>
-      
-      <!-- Output Section (Canvas for 2D drawing) -->
-      <div id="output-section">
-        <h3>Resposta da IA (Desenho 2D)</h3>
-        <canvas id="canvas-output" width="400" height="400"></canvas>
-      </div>
-      
-      <!-- Feedback Section -->
-      <div id="feedback-section">
-        <h3>Feedback</h3>
-        <button id="feedback-correct">Correto</button>
-        <button id="feedback-incorrect">Incorreto</button>
-      </div>
+      <div id="match-result"></div>
     </section>
   </div>
   <script src="script.js"></script>
