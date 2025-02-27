@@ -1,5 +1,5 @@
 // Global array for storing face data
-// Each face: { name, age, imageData (compressed Base64 string) }
+// Each face: { name, age, imageData (Base64 string) }
 let faceDatabase = JSON.parse(localStorage.getItem('faceDatabase')) || [];
 
 // Save the updated database to localStorage
@@ -7,14 +7,16 @@ function updateDatabase() {
   localStorage.setItem('faceDatabase', JSON.stringify(faceDatabase));
 }
 
-// Compress an image file using a canvas and return a Promise with the compressed Base64 string
-function compressImage(file, maxWidth = 200, maxHeight = 200, quality = 0.7) {
+// Compress an image file using a canvas
+// Using less aggressive compression: larger max dimensions and higher quality
+function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.9) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = function (event) {
       const img = new Image();
       img.onload = function () {
         let { width, height } = img;
+        // Only scale down if necessary
         if (width > maxWidth || height > maxHeight) {
           const aspectRatio = width / height;
           if (aspectRatio > 1) {
@@ -30,6 +32,7 @@ function compressImage(file, maxWidth = 200, maxHeight = 200, quality = 0.7) {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
+        // Get compressed image data (JPEG)
         const dataURL = canvas.toDataURL('image/jpeg', quality);
         resolve(dataURL);
       };
@@ -58,11 +61,11 @@ uploadButton.addEventListener('click', async () => {
     return;
   }
   try {
-    uploadStatusDiv.textContent = 'Processando e comprimindo imagem...';
+    uploadStatusDiv.textContent = 'Processando imagem...';
     const compressedData = await compressImage(file);
     faceDatabase.push({ name, age, imageData: compressedData });
     updateDatabase();
-    uploadStatusDiv.textContent = 'Face salva com sucesso!';
+    uploadStatusDiv.textContent = 'Face salva com sucesso!'; // Display success message
     console.log(`Saved face: ${name}, ${age}`);
     // Clear inputs
     uploadFileInput.value = "";
@@ -85,7 +88,6 @@ const matchResultDiv = document.getElementById('match-result');
 matchButton.addEventListener('click', () => {
   const file = matchFileInput.files[0];
   if (!file) {
-    // For debugging, if no file is selected, use a dummy image string
     console.warn("Nenhuma foto de busca selecionada, usando dummy data para teste.");
     simulateMatching("dummy_query_data");
     return;
@@ -101,7 +103,7 @@ matchButton.addEventListener('click', () => {
 // Simulate matching process: iterate through the database and update progress
 function simulateMatching(queryImageData) {
   console.log("Simulate matching started.");
-  // For testing, if the database is empty, add a dummy face
+  // If the database is empty, add a dummy face for testing
   if (faceDatabase.length === 0) {
     console.warn("Banco de dados vazio. Adicionando face dummy para teste.");
     faceDatabase.push({ name: "Dummy", age: "30", imageData: "data:image/jpeg;base64,dummydata" });
@@ -117,7 +119,6 @@ function simulateMatching(queryImageData) {
   
   const interval = setInterval(() => {
     if (index < totalFaces) {
-      // Simulate similarity calculation (for demo, a random value)
       const similarity = Math.floor(Math.random() * 100);
       console.log(`Processando face ${index+1}/${totalFaces}: Similaridade = ${similarity}%`);
       if (similarity >= 90 && similarity > bestSimilarity) {
