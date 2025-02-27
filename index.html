@@ -3,40 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Banco de Faces e Matcher com IA</title>
+  <title>Banco de Faces & Matcher</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Banco de Faces & Matcher</h1>
+    <header>
+      <h1>Banco de Faces & Matcher</h1>
+    </header>
     
     <!-- Section 1: Add Face -->
-    <section id="upload-section">
+    <section id="upload-section" class="card">
       <h2>Adicionar Face</h2>
       <input type="file" id="upload-file" accept="image/*">
       <input type="text" id="person-name" placeholder="Nome da pessoa">
       <input type="number" id="person-age" placeholder="Idade">
       <button id="upload-button">Salvar Face</button>
-      <div id="upload-status"></div>
+      <div id="upload-status" class="status"></div>
     </section>
     
-    <hr>
-    
     <!-- Section 2: Match Face -->
-    <section id="match-section">
+    <section id="match-section" class="card">
       <h2>Procurar Match de Face</h2>
       <input type="file" id="match-file" accept="image/*">
       <button id="match-button">Buscar Match</button>
-      <!-- Progress Bar -->
-      <div id="match-progress-container">
-        <div id="match-progress-bar"></div>
-        <span id="match-progress-text">0%</span>
+      <div id="match-progress-container" class="progress-container">
+        <div id="match-progress-bar" class="progress-bar"></div>
+        <span id="match-progress-text" class="progress-text">0%</span>
       </div>
-      <div id="match-result"></div>
+      <div id="match-result" class="status"></div>
     </section>
+    
+    <footer>
+      <p>&copy; 2025 FaceMatcher Demo</p>
+    </footer>
   </div>
   
-  <!-- Load face-api.js from CDN and then our script -->
+  <!-- Load face-api.js and our script -->
   <script defer src="https://unpkg.com/face-api.js"></script>
   <script defer src="script.js"></script>
 </body>
