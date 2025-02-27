@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   trainButton.addEventListener('click', () => {
     const data = trainingInput.value.trim();
     if (data !== '') {
-      // Save as an object with a feedback counter
       trainingData.push({ problem: data, correct: 0, incorrect: 0 });
       localStorage.setItem('trainingData', JSON.stringify(trainingData));
       alert('Exercício de treinamento adicionado!');
@@ -60,33 +59,42 @@ document.addEventListener('DOMContentLoaded', () => {
     progressBar.style.width = '0%';
     progressText.textContent = '0%';
     outputDiv.textContent = '';
-    
-    // Simulate progress over 5 seconds (adjust as needed)
+
+    // Choose parameters based on resolution mode:
+    let increment, intervalTime;
+    if (resolution === 'low') {
+      // Faster progress: complete in ~1 second
+      increment = 10; // 10% per tick
+      intervalTime = 100; // every 100ms → ~1 second total
+    } else {
+      // Medium resolution: complete in ~5 seconds
+      increment = 2; // 2% per tick
+      intervalTime = 100;
+    }
+
     let progress = 0;
     const interval = setInterval(() => {
-      progress += 2; // Increase progress by 2% every 100ms → ~5 seconds total
+      progress += increment;
       if (progress > 100) progress = 100;
       progressBar.style.width = progress + '%';
       progressText.textContent = progress + '%';
       if (progress === 100) {
         clearInterval(interval);
-        // Generate a solution once progress is complete
         const solution = solveProblem(query, resolution);
         outputDiv.textContent = solution;
       }
-    }, 100);
+    }, intervalTime);
   }
 
   // Dummy solver function: returns a response based on resolution and training data
   function solveProblem(problemText, resolution) {
     if (resolution === 'low') {
-      return "Resposta (baixa resolução):\nNão foi possível gerar uma solução detalhada para \"" + problemText + "\".";
+      return "Resposta (baixa resolução):\nSolução preliminar para \"" + problemText + "\".";
     } else if (resolution === 'medium') {
-      // Combine training data if available
       let response = "Resposta (média resolução):\n";
       if (trainingData.length > 0) {
         response += "Baseado em " + trainingData.length + " exercícios treinados, ";
-        response += "a solução sugerida para \"" + problemText + "\" é: [Solução simulada].";
+        response += "a solução sugerida para \"" + problemText + "\" é: [Solução simulada detalhada].";
       } else {
         response += "Sem dados de treinamento suficientes para gerar uma resposta detalhada.";
       }
@@ -101,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("Nenhuma resposta gerada para fornecer feedback.");
       return;
     }
-    // Log feedback (in a real system, this could trigger a model update)
     feedbackData.push({
       query: lastTest.query,
       resolution: lastTest.resolution,
@@ -110,6 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
     alert("Feedback registrado: " + (isCorrect ? "Correto" : "Incorreto"));
-    lastTest = null; // reset after feedback
+    lastTest = null;
   }
 });
