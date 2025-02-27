@@ -1,80 +1,115 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // DOM elements
   const trainButton = document.getElementById('train-button');
-  const testButton = document.getElementById('test-button');
+  const lowResButton = document.getElementById('low-res-button');
+  const medResButton = document.getElementById('med-res-button');
   const trainingInput = document.getElementById('training-input');
   const testInput = document.getElementById('test-input');
-  const gridOutput = document.getElementById('grid-output');
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
+  const outputDiv = document.getElementById('output');
+  const feedbackCorrect = document.getElementById('feedback-correct');
+  const feedbackIncorrect = document.getElementById('feedback-incorrect');
 
-  // Load previously stored training data or initialize an empty array.
-  let modelData = JSON.parse(localStorage.getItem('modelData')) || [];
+  // Retrieve training data and feedback from localStorage or initialize them
+  let trainingData = JSON.parse(localStorage.getItem('trainingData')) || [];
+  let feedbackData = JSON.parse(localStorage.getItem('feedbackData')) || [];
 
-  // "Train" the model by storing the exercise data.
+  // "Train" the AI: store the training problem in localStorage
   trainButton.addEventListener('click', () => {
     const data = trainingInput.value.trim();
     if (data !== '') {
-      modelData.push(data);
-      localStorage.setItem('modelData', JSON.stringify(modelData));
-      alert('Training data added!');
+      // Save as an object with a feedback counter
+      trainingData.push({ problem: data, correct: 0, incorrect: 0 });
+      localStorage.setItem('trainingData', JSON.stringify(trainingData));
+      alert('Exercício de treinamento adicionado!');
       trainingInput.value = '';
     }
   });
 
-  // "Test" the model by generating a grid drawing output.
-  testButton.addEventListener('click', () => {
-    const query = testInput.value.trim();
-    if (query === '') {
-      alert('Please enter an exercise query.');
-      return;
-    }
-    runModel(query);
+  // Run the model with low-resolution output
+  lowResButton.addEventListener('click', () => {
+    runModel('low');
   });
 
-  // Dummy AI model function that generates a 10x10 grid.
-  function runModel(query) {
-    // Clear any previous grid.
-    gridOutput.innerHTML = '';
+  // Run the model with medium-resolution output
+  medResButton.addEventListener('click', () => {
+    runModel('medium');
+  });
 
-    const rows = 10;
-    const cols = 10;
-    // Create a simple pseudo-random generator seeded by the query string.
-    const seed = hashCode(query);
-    let random = mulberry32(seed);
+  // Feedback: Correct or Incorrect for the last generated solution
+  feedbackCorrect.addEventListener('click', () => {
+    recordFeedback(true);
+  });
+  feedbackIncorrect.addEventListener('click', () => {
+    recordFeedback(false);
+  });
 
-    // Generate the grid cells.
-    for (let i = 0; i < rows * cols; i++) {
-      const cell = document.createElement('div');
-      cell.classList.add('grid-cell');
+  // Global variable to store last test query and resolution for feedback logging
+  let lastTest = null;
 
-      // For demonstration, if there's training data and the random value is high, fill the cell.
-      if (modelData.length > 0 && random() > 0.5) {
-        cell.style.backgroundColor = '#007acc';
-        cell.textContent = 'X';
-        cell.style.color = '#fff';
-      } else {
-        cell.style.backgroundColor = '#fff';
-        cell.textContent = '';
+  // Simulate running the model: show progress and then display a solution
+  function runModel(resolution) {
+    const query = testInput.value.trim();
+    if (!query) {
+      alert('Por favor, digite um problema para testar.');
+      return;
+    }
+    lastTest = { query, resolution, timestamp: Date.now() };
+    // Reset progress and output
+    progressBar.style.width = '0%';
+    progressText.textContent = '0%';
+    outputDiv.textContent = '';
+    
+    // Simulate progress over 5 seconds (adjust as needed)
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 2; // Increase progress by 2% every 100ms → ~5 seconds total
+      if (progress > 100) progress = 100;
+      progressBar.style.width = progress + '%';
+      progressText.textContent = progress + '%';
+      if (progress === 100) {
+        clearInterval(interval);
+        // Generate a solution once progress is complete
+        const solution = solveProblem(query, resolution);
+        outputDiv.textContent = solution;
       }
-      gridOutput.appendChild(cell);
-    }
+    }, 100);
   }
 
-  // A simple hash function to convert a string into an integer.
-  function hashCode(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-      hash = hash & hash; // Convert to 32-bit integer.
+  // Dummy solver function: returns a response based on resolution and training data
+  function solveProblem(problemText, resolution) {
+    if (resolution === 'low') {
+      return "Resposta (baixa resolução):\nNão foi possível gerar uma solução detalhada para \"" + problemText + "\".";
+    } else if (resolution === 'medium') {
+      // Combine training data if available
+      let response = "Resposta (média resolução):\n";
+      if (trainingData.length > 0) {
+        response += "Baseado em " + trainingData.length + " exercícios treinados, ";
+        response += "a solução sugerida para \"" + problemText + "\" é: [Solução simulada].";
+      } else {
+        response += "Sem dados de treinamento suficientes para gerar uma resposta detalhada.";
+      }
+      return response;
     }
-    return hash;
+    return "Solução não definida.";
   }
 
-  // Pseudo-random generator (Mulberry32) seeded with an integer.
-  function mulberry32(a) {
-    return function() {
-      var t = a += 0x6D2B79F5;
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  // Record feedback for the last test
+  function recordFeedback(isCorrect) {
+    if (!lastTest) {
+      alert("Nenhuma resposta gerada para fornecer feedback.");
+      return;
     }
+    // Log feedback (in a real system, this could trigger a model update)
+    feedbackData.push({
+      query: lastTest.query,
+      resolution: lastTest.resolution,
+      correct: isCorrect,
+      timestamp: Date.now()
+    });
+    localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
+    alert("Feedback registrado: " + (isCorrect ? "Correto" : "Incorreto"));
+    lastTest = null; // reset after feedback
   }
 });
