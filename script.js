@@ -55,20 +55,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     lastTest = { query, resolution, timestamp: Date.now() };
-    // Reset progress and output
     progressBar.style.width = '0%';
     progressText.textContent = '0%';
     outputDiv.textContent = '';
 
-    // Choose parameters based on resolution mode:
+    // Set progress parameters: low-res runs fast, medium-res runs slower
     let increment, intervalTime;
     if (resolution === 'low') {
-      // Faster progress: complete in ~1 second
-      increment = 10; // 10% per tick
-      intervalTime = 100; // every 100ms → ~1 second total
+      increment = 20; // 20% per tick → completes in ~500ms (if 5 ticks)
+      intervalTime = 100; // 100ms interval
     } else {
-      // Medium resolution: complete in ~5 seconds
-      increment = 2; // 2% per tick
+      increment = 2;  // 2% per tick → completes in ~5 seconds
       intervalTime = 100;
     }
 
@@ -89,12 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Dummy solver function: returns a response based on resolution and training data
   function solveProblem(problemText, resolution) {
     if (resolution === 'low') {
-      return "Resposta (baixa resolução):\nSolução preliminar para \"" + problemText + "\".";
+      return "Resposta (baixa resolução):\nSolução preliminar para:\n" + problemText;
     } else if (resolution === 'medium') {
       let response = "Resposta (média resolução):\n";
       if (trainingData.length > 0) {
         response += "Baseado em " + trainingData.length + " exercícios treinados, ";
-        response += "a solução sugerida para \"" + problemText + "\" é: [Solução simulada detalhada].";
+        response += "a solução sugerida para:\n" + problemText + "\né: [Solução simulada detalhada].";
       } else {
         response += "Sem dados de treinamento suficientes para gerar uma resposta detalhada.";
       }
