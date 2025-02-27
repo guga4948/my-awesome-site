@@ -14,7 +14,6 @@ function compressImage(file, maxWidth = 200, maxHeight = 200, quality = 0.7) {
     reader.onload = function (event) {
       const img = new Image();
       img.onload = function () {
-        // Calculate dimensions to maintain aspect ratio
         let { width, height } = img;
         if (width > maxWidth || height > maxHeight) {
           const aspectRatio = width / height;
@@ -31,7 +30,6 @@ function compressImage(file, maxWidth = 200, maxHeight = 200, quality = 0.7) {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        // Get compressed image data (JPEG)
         const dataURL = canvas.toDataURL('image/jpeg', quality);
         resolve(dataURL);
       };
@@ -43,7 +41,7 @@ function compressImage(file, maxWidth = 200, maxHeight = 200, quality = 0.7) {
   });
 }
 
-// DOM elements for upload
+// DOM elements for uploading
 const uploadFileInput = document.getElementById('upload-file');
 const personNameInput = document.getElementById('person-name');
 const personAgeInput = document.getElementById('person-age');
@@ -65,6 +63,7 @@ uploadButton.addEventListener('click', async () => {
     faceDatabase.push({ name, age, imageData: compressedData });
     updateDatabase();
     uploadStatusDiv.textContent = 'Face salva com sucesso!';
+    console.log(`Saved face: ${name}, ${age}`);
     // Clear inputs
     uploadFileInput.value = "";
     personNameInput.value = "";
@@ -82,14 +81,15 @@ const matchProgressBar = document.getElementById('match-progress-bar');
 const matchProgressText = document.getElementById('match-progress-text');
 const matchResultDiv = document.getElementById('match-result');
 
-// When matching, simulate scanning the database
+// When matching, process the query image
 matchButton.addEventListener('click', () => {
   const file = matchFileInput.files[0];
   if (!file) {
-    alert('Por favor, selecione uma foto para buscar o match.');
+    // For debugging, if no file is selected, use a dummy image string
+    console.warn("Nenhuma foto de busca selecionada, usando dummy data para teste.");
+    simulateMatching("dummy_query_data");
     return;
   }
-  // For this demo, compress the query image too (though we won't really compare images)
   compressImage(file).then(queryImageData => {
     simulateMatching(queryImageData);
   }).catch(err => {
@@ -100,23 +100,24 @@ matchButton.addEventListener('click', () => {
 
 // Simulate matching process: iterate through the database and update progress
 function simulateMatching(queryImageData) {
+  console.log("Simulate matching started.");
+  // For testing, if the database is empty, add a dummy face
   if (faceDatabase.length === 0) {
-    matchResultDiv.textContent = 'Banco de dados vazio.';
-    return;
+    console.warn("Banco de dados vazio. Adicionando face dummy para teste.");
+    faceDatabase.push({ name: "Dummy", age: "30", imageData: "data:image/jpeg;base64,dummydata" });
+    updateDatabase();
   }
   let index = 0;
   let bestMatch = null;
   let bestSimilarity = 0;
-  // For simulation, assign each face a random similarity score
   const totalFaces = faceDatabase.length;
   matchProgressBar.style.width = '0%';
   matchProgressText.textContent = '0%';
   matchResultDiv.textContent = 'Procurando match...';
   
   const interval = setInterval(() => {
-    // Simulate processing one face per tick
     if (index < totalFaces) {
-      // Generate a random similarity (for demo purposes)
+      // Simulate similarity calculation (for demo, a random value)
       const similarity = Math.floor(Math.random() * 100);
       console.log(`Processando face ${index+1}/${totalFaces}: Similaridade = ${similarity}%`);
       if (similarity >= 90 && similarity > bestSimilarity) {
@@ -129,12 +130,12 @@ function simulateMatching(queryImageData) {
       matchProgressText.textContent = progress + '%';
     } else {
       clearInterval(interval);
-      // Display result
       if (bestMatch) {
         matchResultDiv.innerHTML = `<strong>Match encontrado!</strong><br>Nome: ${bestMatch.name}<br>Idade: ${bestMatch.age}<br>Similaridade: ${bestSimilarity}%`;
       } else {
         matchResultDiv.textContent = 'Nenhum match com 90%+ encontrado.';
       }
+      console.log("Matching complete.");
     }
   }, 50); // Process one face every 50ms
 }
